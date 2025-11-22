@@ -34,7 +34,7 @@ const Sidebar: React.FC = () => {
   const userEmail = localStorage.getItem('userEmail') || 'admin@example.com';
 
   return (
-    <aside className="w-64 bg-white flex flex-col h-screen fixed left-0 top-0 border-r border-gray-200 z-10 hidden md:flex">
+    <aside className="hidden md:flex w-64 bg-white flex-col h-screen fixed left-0 top-0 border-r border-gray-200 z-10">
       <div className="p-6 flex items-center gap-3 border-b border-gray-200">
         <div className="p-2 bg-indigo-600 rounded-lg">
           <ShoppingBag className="w-6 h-6 text-white" />

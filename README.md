@@ -38,12 +38,14 @@ A modern, fully responsive e-commerce admin dashboard built with React, Redux, a
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd dashboard
 ```
 
 2. Install dependencies:
+
 ```bash
 pnpm install
 # or
@@ -55,6 +57,7 @@ npm install
 ### Development Mode
 
 Start the development server:
+
 ```bash
 pnpm dev
 # or
@@ -66,6 +69,7 @@ The application will be available at `http://localhost:5173`
 ### Production Build
 
 Build the application for production:
+
 ```bash
 pnpm build
 # or
@@ -73,6 +77,7 @@ npm run build
 ```
 
 Preview the production build:
+
 ```bash
 pnpm preview
 # or
@@ -82,6 +87,7 @@ npm run preview
 ## Testing
 
 Run unit tests:
+
 ```bash
 pnpm test
 # or
@@ -89,6 +95,7 @@ npm test
 ```
 
 Run tests in watch mode:
+
 ```bash
 pnpm test -- --watch
 ```
@@ -149,6 +156,7 @@ dashboard/
 ## Features in Detail
 
 ### 🏠 Dashboard Overview (Home Page)
+
 - **Key Metrics Cards**: Total Revenue, Orders, Products, and Customers with trend indicators
 - **Revenue Chart**: Interactive area chart with responsive design (250px-384px height scaling)
 - **Recent Orders**: Quick view of latest customer orders with status badges
@@ -156,6 +164,7 @@ dashboard/
 - **Responsive Stats**: Cards adapt from mobile (compact) to desktop (spacious)
 
 ### 🛍️ Product Management
+
 - **Product Grid**: Responsive grid layout (1-4 columns based on screen size)
 - **Product Cards**: Visual product display with image, price, stock, and status
 - **Search Functionality**: Real-time product search by name or category
@@ -164,6 +173,7 @@ dashboard/
 - **Mobile Optimization**: Compact cards with hidden labels on small screens
 
 ### 📦 Order Management
+
 - **Order Table**: Comprehensive table with horizontal scroll on mobile
 - **Order Details**: ID, customer, date, items, total, and status
 - **Status Tracking**: Multi-state order status (Pending, Processing, Shipped, Delivered, Cancelled)
@@ -172,6 +182,7 @@ dashboard/
 - **Responsive Design**: Table scales from mobile (min 640px width) to desktop
 
 ### 👥 Customer Management
+
 - **Customer Cards**: Profile cards with contact information
 - **Customer Metrics**: Total orders and spending per customer
 - **Contact Details**: Email, phone, and location with icons
@@ -180,12 +191,14 @@ dashboard/
 - **Responsive Grid**: 1-3 columns based on screen size
 
 ### 🔐 Authentication
+
 - **Protected Routes**: Secure access to dashboard pages
 - **Login/Signup**: User authentication forms
 - **Session Management**: LocalStorage-based authentication
 - **User Profile**: Display logged-in user information in sidebar
 
 ### 📈 Data Management Page
+
 - **API Integration**: Fetches data from JSONPlaceholder API
 - **Interactive Table**: Sortable columns with search
 - **Pagination**: Customizable items per page
@@ -193,6 +206,7 @@ dashboard/
 - **Loading States**: Elegant loading spinners
 
 ### 📱 Responsive Design
+
 - **Mobile-First**: Optimized for screens from 320px to 4K
 - **Adaptive Layouts**: Components adjust spacing, fonts, and layout
 - **Collapsible Sidebar**: Mobile menu with hamburger icon
@@ -215,12 +229,14 @@ The Data Management page uses the [JSONPlaceholder API](https://jsonplaceholder.
 Redux Toolkit powers the entire application with four main slices:
 
 ### Redux Slices
+
 - **productsSlice**: Manages product inventory, search, and CRUD operations
 - **ordersSlice**: Handles order data, filtering, and status updates
 - **customersSlice**: Manages customer profiles and metrics
 - **dataSlice**: Handles JSONPlaceholder API data fetching
 
 ### Features
+
 - **Type-Safe Hooks**: Custom `useAppDispatch` and `useAppSelector` hooks
 - **Async Thunks**: For API calls with loading and error states
 - **Immutable Updates**: Using Immer under the hood
@@ -248,7 +264,6 @@ test: Add tests
 chore: Update dependencies
 ```
 
-
 **Built with ❤️ using React, Redux Toolkit, TypeScript, and TailwindCSS**
 
-*A fully responsive, production-ready e-commerce admin dashboard*
+_A fully responsive, production-ready e-commerce admin dashboard_
