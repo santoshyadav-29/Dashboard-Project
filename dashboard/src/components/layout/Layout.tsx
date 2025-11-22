@@ -9,10 +9,7 @@ import {
   Package, 
   Users, 
   ShoppingCart, 
-  BarChart3, 
-  Settings,
-  Tag,
-  Truck
+  Settings
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -24,29 +21,26 @@ const Layout: React.FC = () => {
     { name: 'Products', path: '/products', icon: Package },
     { name: 'Orders', path: '/orders', icon: ShoppingCart },
     { name: 'Customers', path: '/customers', icon: Users },
-    { name: 'Categories', path: '/categories', icon: Tag },
-    { name: 'Shipping', path: '/shipping', icon: Truck },
-    { name: 'Analytics', path: '/analytics', icon: BarChart3 },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-50">
+    <div className="min-h-screen bg-gray-50">
       <Sidebar />
       
       {/* Mobile Header */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-gradient-to-r from-blue-900 to-indigo-900 text-white sticky top-0 z-20 shadow-lg">
+      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200 sticky top-0 z-20">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg">
+          <div className="p-1.5 bg-indigo-600 rounded-lg">
             <ShoppingBag className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="font-bold text-lg">ShopAdmin</span>
+            <span className="font-bold text-lg text-gray-900">ShopAdmin</span>
           </div>
         </div>
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 hover:bg-blue-800 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -54,7 +48,7 @@ const Layout: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-gradient-to-b from-blue-900 via-blue-800 to-indigo-900 z-10 overflow-y-auto">
+        <div className="md:hidden fixed inset-0 top-16 bg-white z-10 overflow-y-auto border-t border-gray-200">
           <nav className="p-4 space-y-1">
             {navItems.map((item) => (
               <NavLink
@@ -63,10 +57,10 @@ const Layout: React.FC = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
                   clsx(
-                    'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200',
+                    'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
                     isActive
-                      ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg'
-                      : 'text-blue-100 hover:bg-blue-800/50 hover:text-white'
+                      ? 'bg-indigo-50 text-indigo-600 font-medium'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   )
                 }
               >

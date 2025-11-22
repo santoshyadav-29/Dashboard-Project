@@ -6,11 +6,9 @@ import {
   Package, 
   Users, 
   ShoppingCart, 
-  BarChart3, 
   Settings, 
   LogOut,
-  Tag,
-  Truck
+  User
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -22,9 +20,6 @@ const Sidebar: React.FC = () => {
     { name: 'Products', path: '/products', icon: Package },
     { name: 'Orders', path: '/orders', icon: ShoppingCart },
     { name: 'Customers', path: '/customers', icon: Users },
-    { name: 'Categories', path: '/categories', icon: Tag },
-    { name: 'Shipping', path: '/shipping', icon: Truck },
-    { name: 'Analytics', path: '/analytics', icon: BarChart3 },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
@@ -39,14 +34,14 @@ const Sidebar: React.FC = () => {
   const userEmail = localStorage.getItem('userEmail') || 'admin@example.com';
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-blue-900 via-blue-800 to-indigo-900 text-white flex flex-col h-screen fixed left-0 top-0 shadow-2xl z-10 hidden md:flex">
-      <div className="p-6 flex items-center gap-3 border-b border-blue-700/50">
-        <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl shadow-lg">
+    <aside className="w-64 bg-white flex flex-col h-screen fixed left-0 top-0 border-r border-gray-200 z-10 hidden md:flex">
+      <div className="p-6 flex items-center gap-3 border-b border-gray-200">
+        <div className="p-2 bg-indigo-600 rounded-lg">
           <ShoppingBag className="w-6 h-6 text-white" />
         </div>
         <div>
-          <span className="text-xl font-bold tracking-tight">ShopAdmin</span>
-          <p className="text-xs text-blue-300">E-Commerce Panel</p>
+          <span className="text-xl font-bold tracking-tight text-gray-900">ShopAdmin</span>
+          <p className="text-xs text-gray-500">E-Commerce Panel</p>
         </div>
       </div>
       
@@ -57,10 +52,10 @@ const Sidebar: React.FC = () => {
             to={item.path}
             className={({ isActive }) =>
               clsx(
-                'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group',
+                'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group',
                 isActive
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-900/30'
-                  : 'text-blue-100 hover:bg-blue-800/50 hover:text-white'
+                  ? 'bg-indigo-50 text-indigo-600 font-medium'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               )
             }
           >
@@ -70,19 +65,19 @@ const Sidebar: React.FC = () => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-blue-700/50">
-        <div className="flex items-center gap-3 px-4 py-3 mb-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-400 to-indigo-400 flex items-center justify-center text-white font-bold text-sm">
-            {userName.charAt(0).toUpperCase()}
+      <div className="p-4 border-t border-gray-200">
+        <div className="flex items-center gap-3 px-4 py-3 mb-2 rounded-lg bg-gray-50">
+          <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white">
+            <User className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{userName}</p>
-            <p className="text-xs text-blue-300 truncate">{userEmail}</p>
+            <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
+            <p className="text-xs text-gray-500 truncate">{userEmail}</p>
           </div>
         </div>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-red-500/20 hover:text-red-300 transition-all duration-200"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
         >
           <LogOut className="w-5 h-5" />
           <span className="font-medium">Logout</span>

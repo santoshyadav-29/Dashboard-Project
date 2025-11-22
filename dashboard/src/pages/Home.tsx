@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight, BarChart3 } from 'lucide-react';
+import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight, BarChart3, User } from 'lucide-react';
 
 const StatCard = ({ 
   title, 
@@ -16,10 +16,10 @@ const StatCard = ({
   trendValue: string; 
   color: string;
 }) => (
-  <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100 hover:shadow-lg hover:border-blue-200 transition-all duration-200">
+  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
     <div className="flex items-center justify-between mb-4">
-      <div className={`p-3 rounded-xl ${color} bg-opacity-10`}>
-        <Icon className={`w-6 h-6 ${color.replace('bg-', 'text-')}`} />
+      <div className={`p-3 rounded-lg ${color}`}>
+        <Icon className="w-6 h-6 text-white" />
       </div>
       <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${
         trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
@@ -36,10 +36,10 @@ const StatCard = ({
 );
 
 const RecentOrder = ({ id, customer, amount, status }: { id: string; customer: string; amount: string; status: string }) => (
-  <div className="flex items-center justify-between p-4 hover:bg-blue-50 rounded-xl transition-colors">
+  <div className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-colors">
     <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
-        {customer.charAt(0)}
+      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+        <User className="w-5 h-5" />
       </div>
       <div>
         <p className="font-medium text-gray-900">{customer}</p>
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
           <p className="text-gray-500 mt-1">Welcome back! Here's what's happening with your store today.</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 w-fit">
+        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all w-fit">
           <ArrowUpRight className="w-4 h-4" />
           View Reports
         </button>
@@ -90,7 +90,7 @@ const Home: React.FC = () => {
           icon={DollarSign} 
           trend="up" 
           trendValue="+12.5%" 
-          color="bg-emerald-500 text-emerald-500" 
+          color="bg-emerald-500" 
         />
         <StatCard 
           title="Total Orders" 
@@ -98,7 +98,7 @@ const Home: React.FC = () => {
           icon={ShoppingCart} 
           trend="up" 
           trendValue="+8.2%" 
-          color="bg-blue-500 text-blue-500" 
+          color="bg-blue-500" 
         />
         <StatCard 
           title="Total Products" 
@@ -106,7 +106,7 @@ const Home: React.FC = () => {
           icon={Package} 
           trend="up" 
           trendValue="+3.1%" 
-          color="bg-purple-500 text-purple-500" 
+          color="bg-purple-500" 
         />
         <StatCard 
           title="Total Customers" 
@@ -114,42 +114,42 @@ const Home: React.FC = () => {
           icon={Users} 
           trend="up" 
           trendValue="+15.3%" 
-          color="bg-orange-500 text-orange-500" 
+          color="bg-orange-500" 
         />
       </div>
 
       {/* Charts and Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sales Chart */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-blue-100">
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-gray-900">Sales Overview</h2>
               <p className="text-sm text-gray-500">Monthly sales performance</p>
             </div>
-            <select className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
               <option>Last 7 days</option>
               <option>Last 30 days</option>
               <option>Last 90 days</option>
             </select>
           </div>
-          <div className="h-64 flex items-center justify-center text-gray-400 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
+          <div className="h-64 flex items-center justify-center text-gray-400 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
             <div className="text-center">
-              <BarChart3 className="w-12 h-12 mx-auto mb-2 text-blue-400" />
+              <BarChart3 className="w-12 h-12 mx-auto mb-2 text-gray-400" />
               <p>Chart visualization would go here</p>
             </div>
           </div>
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Orders</h2>
           <div className="space-y-2">
             {recentOrders.map((order) => (
               <RecentOrder key={order.id} {...order} />
             ))}
           </div>
-          <button className="w-full mt-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium text-sm">
+          <button className="w-full mt-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors font-medium text-sm">
             View All Orders
           </button>
         </div>
@@ -157,23 +157,23 @@ const Home: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
-          <Package className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+          <Package className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">Add Product</h3>
           <p className="text-sm text-gray-500">Create new product</p>
         </button>
-        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
-          <ShoppingCart className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+          <ShoppingCart className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">New Order</h3>
           <p className="text-sm text-gray-500">Create manual order</p>
         </button>
-        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
-          <Users className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+          <Users className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">Add Customer</h3>
           <p className="text-sm text-gray-500">Register new customer</p>
         </button>
-        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
-          <TrendingUp className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+          <TrendingUp className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">View Analytics</h3>
           <p className="text-sm text-gray-500">Detailed insights</p>
         </button>

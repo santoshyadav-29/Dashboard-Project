@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Download, Eye, Package } from 'lucide-react';
+import { Search, Filter, Download, Eye, Package, User } from 'lucide-react';
 
 interface Order {
   id: string;
@@ -54,7 +54,7 @@ const Orders: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Orders</h1>
           <p className="text-gray-500 mt-1">Manage and track all customer orders</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 w-fit">
+        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all w-fit">
           <Download className="w-4 h-4" />
           Export Orders
         </button>
@@ -82,7 +82,7 @@ const Orders: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-sm border border-blue-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-4 text-left font-semibold text-gray-700">Order ID</th>
                 <th className="px-6 py-4 text-left font-semibold text-gray-700">Customer</th>
@@ -101,8 +101,8 @@ const Orders: React.FC = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-xs">
-                        {order.customer.charAt(0)}
+                      <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+                        <User className="w-4 h-4" />
                       </div>
                       <span className="font-medium text-gray-900">{order.customer}</span>
                     </div>
@@ -132,7 +132,7 @@ const Orders: React.FC = () => {
         </div>
 
         {/* Pagination */}
-        <div className="px-6 py-4 border-t border-blue-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
+        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">
               Showing {filteredOrders.length} of {orders.length} orders
@@ -141,7 +141,7 @@ const Orders: React.FC = () => {
               <button className="px-4 py-2 border border-gray-200 rounded-lg hover:bg-white transition-colors text-sm font-medium text-gray-700">
                 Previous
               </button>
-              <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all text-sm font-medium">
+              <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all text-sm font-medium">
                 Next
               </button>
             </div>

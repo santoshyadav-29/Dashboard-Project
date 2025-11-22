@@ -8,7 +8,6 @@ import Products from './pages/Products';
 import Orders from './pages/Orders';
 import Customers from './pages/Customers';
 import Settings from './pages/Settings';
-import DataPage from './pages/DataPage';
 
 function App() {
   return (
@@ -31,11 +30,7 @@ function App() {
           <Route path="products" element={<Products />} />
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
-          <Route path="categories" element={<DataPage />} />
-          <Route path="shipping" element={<DataPage />} />
-          <Route path="analytics" element={<DataPage />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="data" element={<DataPage />} />
         </Route>
 
         {/* Catch all - redirect to home */}

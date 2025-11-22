@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Mail, Phone, MapPin, MoreVertical } from 'lucide-react';
+import { Search, Mail, Phone, MapPin, MoreVertical, User } from 'lucide-react';
 
 interface Customer {
   id: number;
@@ -60,8 +60,8 @@ const Customers: React.FC = () => {
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-lg">
-                  {customer.name.charAt(0)}
+                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+                  <User className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">{customer.name}</h3>
