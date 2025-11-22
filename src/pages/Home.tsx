@@ -1,5 +1,8 @@
-import React from 'react';
-import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight, BarChart3, User } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { useAppSelector } from '../app/hooks';
+import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight, User, type LucideIcon } from 'lucide-react';
+import RevenueChart from '../components/charts/RevenueChart';
+import { Link } from 'react-router-dom';
 
 const StatCard = ({ 
   title, 
@@ -11,7 +14,7 @@ const StatCard = ({
 }: { 
   title: string; 
   value: string; 
-  icon: any; 
+  icon: LucideIcon; 
   trend: 'up' | 'down'; 
   trendValue: string; 
   color: string;
@@ -60,13 +63,30 @@ const RecentOrder = ({ id, customer, amount, status }: { id: string; customer: s
 );
 
 const Home: React.FC = () => {
-  const recentOrders = [
-    { id: '1234', customer: 'John Doe', amount: '$234.00', status: 'Completed' },
-    { id: '1235', customer: 'Jane Smith', amount: '$156.00', status: 'Processing' },
-    { id: '1236', customer: 'Bob Johnson', amount: '$89.00', status: 'Pending' },
-    { id: '1237', customer: 'Alice Brown', amount: '$445.00', status: 'Completed' },
-    { id: '1238', customer: 'Charlie Wilson', amount: '$267.00', status: 'Processing' },
-  ];
+  const { items: orders } = useAppSelector((state) => state.orders);
+  const { items: customers } = useAppSelector((state) => state.customers);
+  const { items: products } = useAppSelector((state) => state.products);
+
+  // Calculate stats
+  const totalRevenue = useMemo(() => orders.reduce((sum, order) => sum + order.total, 0), [orders]);
+  const totalOrders = orders.length;
+  const totalCustomers = customers.length;
+  const totalProducts = products.length;
+
+  // Prepare chart data
+  const chartData = useMemo(() => {
+    const revenueByDate = orders.reduce((acc, order) => {
+      const date = order.date;
+      acc[date] = (acc[date] || 0) + order.total;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return Object.entries(revenueByDate)
+      .map(([date, revenue]) => ({ date, revenue }))
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  }, [orders]);
+
+  const recentOrders = orders.slice(0, 5);
 
   return (
     <div className="space-y-6">
@@ -86,7 +106,7 @@ const Home: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatCard 
           title="Total Revenue" 
-          value="$45,231" 
+          value={`$${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={DollarSign} 
           trend="up" 
           trendValue="+12.5%" 
@@ -94,7 +114,7 @@ const Home: React.FC = () => {
         />
         <StatCard 
           title="Total Orders" 
-          value="1,234" 
+          value={totalOrders.toString()}
           icon={ShoppingCart} 
           trend="up" 
           trendValue="+8.2%" 
@@ -102,7 +122,7 @@ const Home: React.FC = () => {
         />
         <StatCard 
           title="Total Products" 
-          value="456" 
+          value={totalProducts.toString()}
           icon={Package} 
           trend="up" 
           trendValue="+3.1%" 
@@ -110,7 +130,7 @@ const Home: React.FC = () => {
         />
         <StatCard 
           title="Total Customers" 
-          value="8,234" 
+          value={totalCustomers.toString()}
           icon={Users} 
           trend="up" 
           trendValue="+15.3%" 
@@ -133,50 +153,51 @@ const Home: React.FC = () => {
               <option>Last 90 days</option>
             </select>
           </div>
-          <div className="h-64 flex items-center justify-center text-gray-400 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-            <div className="text-center">
-              <BarChart3 className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-              <p>Chart visualization would go here</p>
-            </div>
-          </div>
+          <RevenueChart data={chartData} />
         </div>
 
         {/* Recent Orders */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Orders</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900">Recent Orders</h3>
+            <Link to="/orders" className="text-sm text-indigo-600 font-medium hover:text-indigo-700">View All</Link>
+          </div>
           <div className="space-y-2">
             {recentOrders.map((order) => (
-              <RecentOrder key={order.id} {...order} />
+              <RecentOrder 
+                key={order.id} 
+                id={order.id} 
+                customer={order.customer} 
+                amount={`$${order.total.toFixed(2)}`} 
+                status={order.status} 
+              />
             ))}
           </div>
-          <button className="w-full mt-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors font-medium text-sm">
-            View All Orders
-          </button>
         </div>
       </div>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+        <Link to="/products" className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
           <Package className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">Add Product</h3>
           <p className="text-sm text-gray-500">Create new product</p>
-        </button>
-        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+        </Link>
+        <Link to="/orders" className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
           <ShoppingCart className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">New Order</h3>
           <p className="text-sm text-gray-500">Create manual order</p>
-        </button>
-        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+        </Link>
+        <Link to="/customers" className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
           <Users className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
           <h3 className="font-semibold text-gray-900">Add Customer</h3>
           <p className="text-sm text-gray-500">Register new customer</p>
-        </button>
-        <button className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
+        </Link>
+        <Link to="/data" className="p-4 bg-white border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left group">
           <TrendingUp className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
-          <h3 className="font-semibold text-gray-900">View Analytics</h3>
+          <h3 className="font-semibold text-gray-900">View Data</h3>
           <p className="text-sm text-gray-500">Detailed insights</p>
-        </button>
+        </Link>
       </div>
     </div>
   );
