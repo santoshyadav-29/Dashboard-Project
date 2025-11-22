@@ -1,34 +1,22 @@
 import React, { useState } from 'react';
-import { Search, Plus, Filter, MoreVertical, Edit, Trash2, Eye } from 'lucide-react';
-
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-  status: 'In Stock' | 'Low Stock' | 'Out of Stock';
-  image: string;
-}
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { setSearchQuery, deleteProduct } from '../features/products/productsSlice';
+import { Search, Plus, Filter, Edit, Trash2, Eye } from 'lucide-react';
 
 const Products: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const products: Product[] = [
-    { id: 1, name: 'Wireless Headphones', category: 'Electronics', price: 99.99, stock: 45, status: 'In Stock', image: '🎧' },
-    { id: 2, name: 'Smart Watch', category: 'Electronics', price: 199.99, stock: 12, status: 'Low Stock', image: '⌚' },
-    { id: 3, name: 'Laptop Stand', category: 'Accessories', price: 49.99, stock: 0, status: 'Out of Stock', image: '💻' },
-    { id: 4, name: 'USB-C Cable', category: 'Accessories', price: 19.99, stock: 156, status: 'In Stock', image: '🔌' },
-    { id: 5, name: 'Mechanical Keyboard', category: 'Electronics', price: 149.99, stock: 34, status: 'In Stock', image: '⌨️' },
-    { id: 6, name: 'Wireless Mouse', category: 'Electronics', price: 39.99, stock: 8, status: 'Low Stock', image: '🖱️' },
-    { id: 7, name: 'Phone Case', category: 'Accessories', price: 24.99, stock: 89, status: 'In Stock', image: '📱' },
-    { id: 8, name: 'Screen Protector', category: 'Accessories', price: 14.99, stock: 234, status: 'In Stock', image: '🛡️' },
-  ];
+  const dispatch = useAppDispatch();
+  const { items, searchQuery } = useAppSelector((state) => state.products);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(null);
 
-  const filteredProducts = products.filter(product =>
+  const filteredProducts = items.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteProduct(id));
+    setShowDeleteConfirm(null);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -49,9 +37,9 @@ const Products: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Products</h1>
-          <p className="text-gray-500 mt-1">Manage your product inventory</p>
+          <p className="text-gray-500 mt-1">Manage your product inventory ({filteredProducts.length} products)</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 w-fit">
+        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all w-fit">
           <Plus className="w-4 h-4" />
           Add Product
         </button>
@@ -65,11 +53,11 @@ const Products: React.FC = () => {
             type="text"
             placeholder="Search products..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+            className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white"
           />
         </div>
-        <button className="flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors bg-white">
+        <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors bg-white">
           <Filter className="w-5 h-5 text-gray-600" />
           <span className="font-medium text-gray-700">Filters</span>
         </button>
@@ -80,16 +68,11 @@ const Products: React.FC = () => {
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-2xl shadow-sm border border-blue-100 hover:shadow-lg hover:border-blue-200 transition-all duration-200 overflow-hidden group"
+            className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden group"
           >
             {/* Product Image */}
-            <div className="h-48 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center text-6xl relative">
+            <div className="h-48 bg-gray-50 flex items-center justify-center text-6xl relative border-b border-gray-200">
               {product.image}
-              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button className="p-2 bg-white rounded-lg shadow-lg hover:bg-gray-50">
-                  <MoreVertical className="w-4 h-4 text-gray-600" />
-                </button>
-              </div>
             </div>
 
             {/* Product Info */}
@@ -102,7 +85,7 @@ const Products: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-between mb-3">
-                <span className="text-2xl font-bold text-blue-600">${product.price}</span>
+                <span className="text-2xl font-bold text-indigo-600">${product.price}</span>
                 <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(product.status)}`}>
                   {product.status}
                 </span>
@@ -115,14 +98,17 @@ const Products: React.FC = () => {
 
               {/* Actions */}
               <div className="flex gap-2">
-                <button className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium">
+                <button className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors text-sm font-medium">
                   <Edit className="w-4 h-4" />
                   Edit
                 </button>
                 <button className="flex items-center justify-center px-3 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
                   <Eye className="w-4 h-4" />
                 </button>
-                <button className="flex items-center justify-center px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                <button 
+                  onClick={() => setShowDeleteConfirm(product.id)}
+                  className="flex items-center justify-center px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -133,12 +119,36 @@ const Products: React.FC = () => {
 
       {/* Empty State */}
       {filteredProducts.length === 0 && (
-        <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-12 text-center">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-blue-600" />
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-8 h-8 text-gray-400" />
           </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
           <p className="text-gray-500">Try adjusting your search or filter criteria</p>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm !== null && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Product</h3>
+            <p className="text-gray-600 mb-6">Are you sure you want to delete this product? This action cannot be undone.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(showDeleteConfirm)}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
