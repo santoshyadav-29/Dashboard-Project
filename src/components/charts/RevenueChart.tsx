@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AreaChart,
   Area,
@@ -7,7 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 
 interface DataPoint {
   date: string;
@@ -20,14 +20,14 @@ interface RevenueChartProps {
 
 const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
   return (
-    <div className="h-[300px] w-full">
+    <div className="h-[300px] sm:h-[350px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
           margin={{
             top: 10,
-            right: 30,
-            left: 0,
+            right: 10,
+            left: -10,
             bottom: 0,
           }}
         >
@@ -37,28 +37,34 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
               <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-          <XAxis 
-            dataKey="date" 
+          <CartesianGrid
+            strokeDasharray="3 3"
+            vertical={false}
+            stroke="#e5e7eb"
+          />
+          <XAxis
+            dataKey="date"
             axisLine={false}
             tickLine={false}
-            tick={{ fill: '#6b7280', fontSize: 12 }}
+            tick={{ fill: "#6b7280", fontSize: 12 }}
             dy={10}
+            minTickGap={20}
           />
-          <YAxis 
+          <YAxis
             axisLine={false}
             tickLine={false}
-            tick={{ fill: '#6b7280', fontSize: 12 }}
+            tick={{ fill: "#6b7280", fontSize: 12 }}
             tickFormatter={(value: number) => `$${value}`}
+            width={60}
           />
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: '#fff', 
-              borderRadius: '8px', 
-              border: '1px solid #e5e7eb',
-              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#fff",
+              borderRadius: "8px",
+              border: "1px solid #e5e7eb",
+              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
             }}
-            formatter={(value: number) => [`$${value.toFixed(2)}`, 'Revenue']}
+            formatter={(value: number) => [`$${value.toFixed(2)}`, "Revenue"]}
           />
           <Area
             type="monotone"
