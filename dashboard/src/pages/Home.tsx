@@ -1,48 +1,182 @@
 import React from 'react';
-import { Users, FileText, TrendingUp, DollarSign } from 'lucide-react';
+import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
 
-const StatCard = ({ title, value, icon: Icon, color }: { title: string; value: string; icon: any; color: string }) => (
-  <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm font-medium text-slate-500">{title}</p>
-        <h3 className="text-2xl font-bold text-slate-900 mt-1">{value}</h3>
-      </div>
+const StatCard = ({ 
+  title, 
+  value, 
+  icon: Icon, 
+  trend, 
+  trendValue, 
+  color 
+}: { 
+  title: string; 
+  value: string; 
+  icon: any; 
+  trend: 'up' | 'down'; 
+  trendValue: string; 
+  color: string;
+}) => (
+  <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100 hover:shadow-lg hover:border-blue-200 transition-all duration-200">
+    <div className="flex items-center justify-between mb-4">
       <div className={`p-3 rounded-xl ${color} bg-opacity-10`}>
         <Icon className={`w-6 h-6 ${color.replace('bg-', 'text-')}`} />
       </div>
+      <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${
+        trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
+      }`}>
+        {trend === 'up' ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+        {trendValue}
+      </div>
     </div>
-    <div className="mt-4 flex items-center gap-2 text-sm">
-      <span className="text-emerald-500 font-medium flex items-center gap-1">
-        <TrendingUp className="w-4 h-4" /> +12.5%
+    <div>
+      <p className="text-sm font-medium text-gray-500 mb-1">{title}</p>
+      <h3 className="text-2xl font-bold text-gray-900">{value}</h3>
+    </div>
+  </div>
+);
+
+const RecentOrder = ({ id, customer, amount, status }: { id: string; customer: string; amount: string; status: string }) => (
+  <div className="flex items-center justify-between p-4 hover:bg-blue-50 rounded-xl transition-colors">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
+        {customer.charAt(0)}
+      </div>
+      <div>
+        <p className="font-medium text-gray-900">{customer}</p>
+        <p className="text-sm text-gray-500">Order #{id}</p>
+      </div>
+    </div>
+    <div className="text-right">
+      <p className="font-semibold text-gray-900">{amount}</p>
+      <span className={`text-xs px-2 py-1 rounded-full ${
+        status === 'Completed' ? 'bg-emerald-100 text-emerald-700' :
+        status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
+        'bg-blue-100 text-blue-700'
+      }`}>
+        {status}
       </span>
-      <span className="text-slate-400">from last month</span>
     </div>
   </div>
 );
 
 const Home: React.FC = () => {
+  const recentOrders = [
+    { id: '1234', customer: 'John Doe', amount: '$234.00', status: 'Completed' },
+    { id: '1235', customer: 'Jane Smith', amount: '$156.00', status: 'Processing' },
+    { id: '1236', customer: 'Bob Johnson', amount: '$89.00', status: 'Pending' },
+    { id: '1237', customer: 'Alice Brown', amount: '$445.00', status: 'Completed' },
+    { id: '1238', customer: 'Charlie Wilson', amount: '$267.00', status: 'Processing' },
+  ];
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">Dashboard Overview</h1>
-        <p className="text-slate-500 mt-2">Welcome back! Here's what's happening today.</p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
+          <p className="text-gray-500 mt-1">Welcome back! Here's what's happening with your store today.</p>
+        </div>
+        <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 w-fit">
+          <ArrowUpRight className="w-4 h-4" />
+          View Reports
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Users" value="1,234" icon={Users} color="bg-blue-500 text-blue-500" />
-        <StatCard title="Total Posts" value="456" icon={FileText} color="bg-purple-500 text-purple-500" />
-        <StatCard title="Revenue" value="$12,345" icon={DollarSign} color="bg-emerald-500 text-emerald-500" />
-        <StatCard title="Active Sessions" value="89" icon={TrendingUp} color="bg-orange-500 text-orange-500" />
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <StatCard 
+          title="Total Revenue" 
+          value="$45,231" 
+          icon={DollarSign} 
+          trend="up" 
+          trendValue="+12.5%" 
+          color="bg-emerald-500 text-emerald-500" 
+        />
+        <StatCard 
+          title="Total Orders" 
+          value="1,234" 
+          icon={ShoppingCart} 
+          trend="up" 
+          trendValue="+8.2%" 
+          color="bg-blue-500 text-blue-500" 
+        />
+        <StatCard 
+          title="Total Products" 
+          value="456" 
+          icon={Package} 
+          trend="up" 
+          trendValue="+3.1%" 
+          color="bg-purple-500 text-purple-500" 
+        />
+        <StatCard 
+          title="Total Customers" 
+          value="8,234" 
+          icon={Users} 
+          trend="up" 
+          trendValue="+15.3%" 
+          color="bg-orange-500 text-orange-500" 
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-64 flex items-center justify-center text-slate-400">
-          Chart Placeholder (Revenue)
+      {/* Charts and Recent Orders */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Sales Chart */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-blue-100">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Sales Overview</h2>
+              <p className="text-sm text-gray-500">Monthly sales performance</p>
+            </div>
+            <select className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+            </select>
+          </div>
+          <div className="h-64 flex items-center justify-center text-gray-400 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
+            <div className="text-center">
+              <BarChart3 className="w-12 h-12 mx-auto mb-2 text-blue-400" />
+              <p>Chart visualization would go here</p>
+            </div>
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-64 flex items-center justify-center text-slate-400">
-          Chart Placeholder (User Growth)
+
+        {/* Recent Orders */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Orders</h2>
+          <div className="space-y-2">
+            {recentOrders.map((order) => (
+              <RecentOrder key={order.id} {...order} />
+            ))}
+          </div>
+          <button className="w-full mt-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium text-sm">
+            View All Orders
+          </button>
         </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
+          <Package className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="font-semibold text-gray-900">Add Product</h3>
+          <p className="text-sm text-gray-500">Create new product</p>
+        </button>
+        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
+          <ShoppingCart className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="font-semibold text-gray-900">New Order</h3>
+          <p className="text-sm text-gray-500">Create manual order</p>
+        </button>
+        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
+          <Users className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="font-semibold text-gray-900">Add Customer</h3>
+          <p className="text-sm text-gray-500">Register new customer</p>
+        </button>
+        <button className="p-4 bg-white border-2 border-dashed border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all text-left group">
+          <TrendingUp className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="font-semibold text-gray-900">View Analytics</h3>
+          <p className="text-sm text-gray-500">Detailed insights</p>
+        </button>
       </div>
     </div>
   );
