@@ -1,37 +1,37 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  ShoppingBag, 
-  Package, 
-  Users, 
-  ShoppingCart, 
-  Settings, 
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  ShoppingBag,
+  Package,
+  Users,
+  ShoppingCart,
+  Settings,
   LogOut,
-  User
-} from 'lucide-react';
-import { clsx } from 'clsx';
+  User,
+} from "lucide-react";
+import { clsx } from "clsx";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const navItems = [
-    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Products', path: '/products', icon: Package },
-    { name: 'Orders', path: '/orders', icon: ShoppingCart },
-    { name: 'Customers', path: '/customers', icon: Users },
-    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: "Dashboard", path: "/", icon: LayoutDashboard },
+    { name: "Products", path: "/products", icon: Package },
+    { name: "Orders", path: "/orders", icon: ShoppingCart },
+    { name: "Customers", path: "/customers", icon: Users },
+    { name: "Settings", path: "/settings", icon: Settings },
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
-    navigate('/login');
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
+    navigate("/login");
   };
 
-  const userName = localStorage.getItem('userName') || 'Admin User';
-  const userEmail = localStorage.getItem('userEmail') || 'admin@example.com';
+  const userName = localStorage.getItem("userName") || "Admin User";
+  const userEmail = localStorage.getItem("userEmail") || "admin@example.com";
 
   return (
     <aside className="hidden md:flex w-64 bg-white flex-col h-screen fixed left-0 top-0 border-r border-gray-200 z-10">
@@ -40,11 +40,13 @@ const Sidebar: React.FC = () => {
           <ShoppingBag className="w-6 h-6 text-white" />
         </div>
         <div>
-          <span className="text-xl font-bold tracking-tight text-gray-900">ShopAdmin</span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            ShopAdmin
+          </span>
           <p className="text-xs text-gray-500">E-Commerce Panel</p>
         </div>
       </div>
-      
+
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
@@ -52,10 +54,10 @@ const Sidebar: React.FC = () => {
             to={item.path}
             className={({ isActive }) =>
               clsx(
-                'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group',
+                "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
                 isActive
-                  ? 'bg-indigo-50 text-indigo-600 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? "bg-indigo-50 text-indigo-600 font-medium"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               )
             }
           >
@@ -71,7 +73,9 @@ const Sidebar: React.FC = () => {
             <User className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
+            <p className="text-sm font-medium text-gray-900 truncate">
+              {userName}
+            </p>
             <p className="text-xs text-gray-500 truncate">{userEmail}</p>
           </div>
         </div>
