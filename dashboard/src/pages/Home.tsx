@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
+import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, ArrowUpRight, BarChart3 } from 'lucide-react';
 
 const StatCard = ({ 
   title, 
