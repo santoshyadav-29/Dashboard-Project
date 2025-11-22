@@ -20,15 +20,15 @@ interface RevenueChartProps {
 
 const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
   return (
-    <div className="h-[300px] sm:h-[350px] w-full">
+    <div className="h-[250px] xs:h-[280px] sm:h-80 md:h-[350px] lg:h-96 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
           margin={{
             top: 10,
-            right: 10,
-            left: -10,
-            bottom: 0,
+            right: 5,
+            left: -20,
+            bottom: 5,
           }}
         >
           <defs>
@@ -46,16 +46,23 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
             dataKey="date"
             axisLine={false}
             tickLine={false}
-            tick={{ fill: "#6b7280", fontSize: 12 }}
-            dy={10}
-            minTickGap={20}
+            tick={{ fill: "#6b7280", fontSize: 10 }}
+            dy={5}
+            minTickGap={10}
+            interval="preserveStartEnd"
+            angle={-45}
+            textAnchor="end"
+            height={60}
           />
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={{ fill: "#6b7280", fontSize: 12 }}
-            tickFormatter={(value: number) => `$${value}`}
-            width={60}
+            tick={{ fill: "#6b7280", fontSize: 10 }}
+            tickFormatter={(value: number) => {
+              if (value >= 1000) return `$${(value / 1000).toFixed(0)}k`;
+              return `$${value}`;
+            }}
+            width={45}
           />
           <Tooltip
             contentStyle={{
@@ -63,8 +70,11 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
               borderRadius: "8px",
               border: "1px solid #e5e7eb",
               boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+              fontSize: "12px",
+              padding: "8px 12px",
             }}
             formatter={(value: number) => [`$${value.toFixed(2)}`, "Revenue"]}
+            labelStyle={{ fontSize: "11px", fontWeight: "600" }}
           />
           <Area
             type="monotone"
@@ -73,6 +83,7 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#colorRevenue)"
+            animationDuration={800}
           />
         </AreaChart>
       </ResponsiveContainer>
